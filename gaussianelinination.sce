@@ -1,34 +1,63 @@
-A=[2,-1,3;2,2,3;-2,3,0], b=[5;7;-3]
-A_aug=[A b]
-a=A_aug
-n=3;
-for i=2:n
-    for j=2:n+1
-        a(i,j)=a(i,j)-a(1,j)*a(i,1)/a(1,1);
-end
-a(i,1)=0;
-end
-for i=3:n
-    for j=3:n+1
-        a(i,j)=a(i,j)-a(2,j)*a(i,2)/a(2,2);
+
+clc
+
+funcprot(0)   //if variables are redefined do nothing
+
+format('v',10)
+
+A = input("Enter a matrix[NxN]: ")
+
+
+
+function gauss_jordan(A)
+
+    
+
+    n = length(A(1,:));
+
+    aug = [A,eye(n,n)];
+
+    
+
+    //forward elimination
+
+    for j=1:n-1
+
+        for i=j+1:n
+
+            aug(i,j:2*n) = aug(i,j:2*n) - aug(i,j)/aug(j,j)*aug(j,j:2*n)
+
+        end
+
     end
-    a(i,2)=0;
-end
-x(n)=a(n,n+1)/a(n,n);for i=n-1:-1:1
-    sumk=0;
-    for k=i+1:n
-        sumk=sumk+a(i,k)*x(k);
+
+    
+
+    //backward elimination
+
+    for j=n:-1:2
+
+            aug(1:j-1,:) = aug(1:j-1,:) - aug(1:j-1,j)/aug(j,j)*aug(j,:)
+
     end
-    x(i)=(a(i,n+1)-sumk)/a(i,i);
-end
-disp(x(3),x(2),x(1),'the value of x,y,z are');
-disp(a(1,1),a(2,2),a(3,3), 'the pivots are');
 
+    
 
+    //Diagonal Normalization
 
+    for j=1:n
 
+        aug(j,:) = aug(j,:) / aug(j,j);
 
+    end
 
+    
 
+    B = aug(:,n+1:2*n);
 
+    disp(B,'The Inverse of A is ');
+
+    
+
+endfunction
 
