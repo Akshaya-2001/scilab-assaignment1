@@ -1,7 +1,7 @@
 
 clc
 
-funcprot(0)   /
+funcprot(0)   
 
 format('v',10)
 
