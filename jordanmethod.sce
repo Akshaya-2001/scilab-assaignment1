@@ -1,21 +1,63 @@
-A=[2 2 2; 3 2 -1; 2 4 2];
-n=length(A(1,:));
-Aug=[A,eye(n,n)];
-N=1:n;
-for i=1:n
-dummy1=N;
-dummy1(i)=[];
-index(i,:)=dummy1;
-end
-//forward elimination
-for j=1:n
-[dummy2,t]=max(abs(Aug(j:n,j)));
-lrow=t+j-1;
-Aug([j,lrow],:)=Aug([lrow,j],:);
-Aug(j,:)=Aug(j,:)/Aug(j,j);
-for i=index (j,:)
-Aug(i,:)=Aug(i,:)-Aug(i,j)/Aug(j,j)*Aug(j,:);
-end
-end
-Inv_A=Aug(:,n+1:2*n);
-disp(Inv_A)
+
+clc
+
+funcprot(0)   //if variables are redefined do nothing
+
+format('v',10)
+
+A = input("Enter a matrix[NxN]: ")
+
+
+
+function gauss_jordan(A)
+
+    
+
+    n = length(A(1,:));
+
+    aug = [A,eye(n,n)];
+
+    
+
+    //forward elimination
+
+    for j=1:n-1
+
+        for i=j+1:n
+
+            aug(i,j:2*n) = aug(i,j:2*n) - aug(i,j)/aug(j,j)*aug(j,j:2*n)
+
+        end
+
+    end
+
+    
+
+    //backward elimination
+
+    for j=n:-1:2
+
+            aug(1:j-1,:) = aug(1:j-1,:) - aug(1:j-1,j)/aug(j,j)*aug(j,:)
+
+    end
+
+    
+
+    //Diagonal Normalization
+
+    for j=1:n
+
+        aug(j,:) = aug(j,:) / aug(j,j);
+
+    end
+
+    
+
+    B = aug(:,n+1:2*n);
+
+    disp(B,'The Inverse of A is ');
+
+    
+
+endfunction
+
